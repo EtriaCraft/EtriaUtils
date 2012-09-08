@@ -1,0 +1,14 @@
+name: EtriaUtils
+version: v1.0
+main: com.etriacraft.EtriaUtils.EtriaUtils
+commands:
+  etriautils:
+    usage: /<command> reload
+    aliases: [eu]
+permissions:
+  eu.itemsave:
+    description: Saves items on death.
+  eu.saveexp:
+    description: Saves EXP on death.
+  eu.chat.color:
+    description: Allows using colored messages in chat.
