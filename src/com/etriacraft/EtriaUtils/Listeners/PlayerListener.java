@@ -1,4 +1,4 @@
-package Listeners;
+package com.etriacraft.EtriaUtils.Listeners;
 
 import java.util.HashMap;
 
@@ -8,11 +8,19 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.etriacraft.EtriaUtils.EtriaUtils;
+
 public class PlayerListener implements Listener{
 	
 	public HashMap<String, ItemStack[]> deathinventory = new HashMap<String, ItemStack[]>();
 	public HashMap<String, ItemStack[]> deatharmor = new HashMap<String, ItemStack[]>();
 		
+	EtriaUtils plugin;
+	
+	public PlayerListener(EtriaUtils instance) {
+		this.plugin = instance;
+	}
+	
 	@EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
         if (e.getEntity().hasPermission("eu.dropsave")) {

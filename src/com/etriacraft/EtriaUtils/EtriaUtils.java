@@ -1,11 +1,11 @@
 package com.etriacraft.EtriaUtils;
 
-import java.io.File;
 import java.util.logging.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import Listeners.PlayerListener;
-import Listeners.SignListener;
+import com.etriacraft.EtriaUtils.Listeners.PlayerListener;
+import com.etriacraft.EtriaUtils.Listeners.SignListener;
+
 
 public class EtriaUtils extends JavaPlugin {
 
@@ -14,13 +14,10 @@ public class EtriaUtils extends JavaPlugin {
 	
 	@Override
 	public void onEnable() {
-		
-		this.getServer().getPluginManager().registerEvents(new SignListener(), this);
-		this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
-		
-	}
 
-	public void onDisable() {
+		// Register Listeners
+		this.getServer().getPluginManager().registerEvents(new SignListener(), this);
+		this.getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
+		
 	}
-	
 }

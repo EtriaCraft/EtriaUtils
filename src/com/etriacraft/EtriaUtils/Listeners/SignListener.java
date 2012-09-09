@@ -1,4 +1,4 @@
-package Listeners;
+package com.etriacraft.EtriaUtils.Listeners;
 
 import java.util.HashSet;
 import org.bukkit.Location;
