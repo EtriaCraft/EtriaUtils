@@ -8,7 +8,7 @@ import com.etriacraft.EtriaUtils.Listeners.SignListener;
 
 
 public class EtriaUtils extends JavaPlugin {
-	
+	f
 	public static final Logger log = Logger.getLogger("Minecraft");
 	public static final String PREFIX = "[EtriaUtils] ";
 	
