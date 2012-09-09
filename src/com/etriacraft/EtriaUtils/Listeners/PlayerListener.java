@@ -2,6 +2,7 @@ package com.etriacraft.EtriaUtils.Listeners;
 
 import java.util.HashMap;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -68,7 +69,12 @@ public class PlayerListener implements Listener{
     
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
-    	e.setJoinMessage(Utils.colorize(Config.join_message).replaceAll("<name>", e.getPlayer().getName()));
+    	Player p = e.getPlayer();
+    	if (!p.hasPlayedBefore()) {
+    		e.setJoinMessage(Utils.colorize(Config.welcome_message).replaceAll("<name>", e.getPlayer().getName()));
+    	} else {
+    		e.setJoinMessage(Utils.colorize(Config.join_message).replaceAll("<name>", e.getPlayer().getName()));
+    }
     }
     
     @EventHandler
