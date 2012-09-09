@@ -3,12 +3,19 @@ package com.etriacraft.EtriaUtils.Listeners;
 import java.util.HashMap;
 
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.etriacraft.EtriaUtils.Config;
 import com.etriacraft.EtriaUtils.EtriaUtils;
+import com.etriacraft.EtriaUtils.Utils;
 
 public class PlayerListener implements Listener{
 	
@@ -43,4 +50,30 @@ public class PlayerListener implements Listener{
         deathinventory.remove(e.getPlayer().getName());
         deatharmor.remove(e.getPlayer().getName());
     }
+    
+    @EventHandler (priority = EventPriority.MONITOR)
+    public void onPlayerLogin(final PlayerLoginEvent e) {
+    	plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+    		@Override
+    		public void run() {
+    			plugin.getServer().getPluginCommand("list").execute(e.getPlayer(), "list", null);
+    		}
+    	}, 1L);
+    }
+    
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent e) {
+    	e.setQuitMessage(Utils.colorize(Config.leave_message).replaceAll("<name>", e.getPlayer().getName()));
+    }
+    
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent e) {
+    	e.setJoinMessage(Utils.colorize(Config.join_message).replaceAll("<name>", e.getPlayer().getName()));
+    }
+    
+    @EventHandler
+    public void onPlayerKick(PlayerKickEvent e) {
+    	e.setLeaveMessage(Utils.colorize(Config.leave_message).replaceAll("<name>", e.getPlayer().getName()));
+    }
+    
 }

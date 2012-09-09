@@ -2,6 +2,14 @@ name: EtriaUtils
 version: v1.0
 main: com.etriacraft.EtriaUtils.EtriaUtils
 commands:
+  modchat:
+    description: Modchat command
+    usage: /<command> [message]
+    aliases: [ac, mc, mb, modbroadcast]
+  list:
+    description: Shows a player list
+    usage: /<command>
+    aliases: [who, list, online, players]
 permissions:
   eu.dropsave:
     description: Saves item drops on death.
