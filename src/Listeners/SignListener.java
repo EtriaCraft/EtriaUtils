@@ -24,102 +24,99 @@ public class SignListener implements Listener {
     
     public static final HashSet<Integer> safeLiftIds = new HashSet();
 
-	@EventHandler
-	public void onPlayerInteract(PlayerInteractEvent event) {
-        if (!event.getAction().equals(Action.LEFT_CLICK_BLOCK) && !event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
-        if (!(event.getClickedBlock().getState() instanceof Sign) && !event.getClickedBlock().getType().equals(Material.STONE_BUTTON)) return;
-        
-        if (event.getPlayer().isSneaking()) return;
-        
-        Sign sign = null;
-        if (event.getClickedBlock().getType().equals(Material.STONE_BUTTON)) {
-            Button btn = (Button) event.getClickedBlock().getState().getData();
-            Block block = event.getClickedBlock().getRelative(btn.getAttachedFace()); //Block button is on.
-            for (BlockFace bf : BlockFace.values()) {
-                if ((block.getRelative(bf).getState() instanceof Sign)) {
-                    sign = (Sign) block.getRelative(bf).getState();
-                    break;
-                }
-            }
-            if (sign == null) return;
-        } else {
-            sign = (Sign)event.getClickedBlock().getState();
-        }
-        
-        if (!sign.getLine(1).equals("[Elevator]")) return;
-        
-        if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-            event.setUseItemInHand(Event.Result.DENY);
-            event.setUseInteractedBlock(Event.Result.DENY);
-            for (int y = (sign.getY() - 1); y >= 0; y--) {
-                Block b = sign.getWorld().getBlockAt(sign.getX(), y, sign.getZ());
-                if (!(b.getState() instanceof Sign)) continue;
-                Sign s = (Sign) b.getState();
-                if (s.getLine(1).equalsIgnoreCase("[Elevator]")) {
-                    if (!teleport(event.getPlayer(), s.getWorld(), y)) return;
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent e) {
+    if (e.getAction() != Action.LEFT_CLICK_BLOCK && e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+    if (!(e.getClickedBlock().getState() instanceof Sign) && e.getClickedBlock().getType() != Material.STONE_BUTTON) return;
 
-                    if (s.getLine(0).isEmpty()) event.getPlayer().sendMessage("§aGoing down");
-                    else event.getPlayer().sendMessage("§aGoing to " + s.getLine(0));
-                    return;
-                }
-            }
-            event.getPlayer().sendMessage("§aThere was no elevator found below this");
-        } else {
-            for (int y = (sign.getY() + 1); y <= 256; y++) {
-                Block b = sign.getWorld().getBlockAt(sign.getX(), y, sign.getZ());
-                if (!(b.getState() instanceof Sign)) continue;
-                Sign s = (Sign)b.getState();
-                if (s.getLine(1).equalsIgnoreCase("[Elevator]")) {
-                    if (!teleport(event.getPlayer(), s.getWorld(), y)) return;
+    if (e.getPlayer().isSneaking()) return;
 
-                    if (s.getLine(0).isEmpty()) event.getPlayer().sendMessage("§aGoing up");
-                    else event.getPlayer().sendMessage("§aGoing to " + s.getLine(0));
-                    return;
-                }
+    Sign sign = null;
+    if (e.getClickedBlock().getType() == Material.STONE_BUTTON) {
+        Button btn = (Button) e.getClickedBlock().getState().getData();
+        Block block = e.getClickedBlock().getRelative(btn.getAttachedFace());
+        for (BlockFace bf : BlockFace.values()) {
+            if (block.getRelative(bf).getState() instanceof Sign) {
+                sign = (Sign) block.getRelative(bf).getState();
+                break;
             }
-            event.getPlayer().sendMessage("§aThere was no elevator found above this");
         }
-    }
-    
-    private boolean teleport(Player player, World w, int y) {
-        y--;
-        Location loc = player.getLocation();
-        if (!safeLiftIds.contains(w.getBlockAt(loc.getBlockX(), (y), loc.getBlockZ()).getType())) y++;
-        //One hell of an if!
-        if ((safeLiftIds.contains(w.getBlockAt(loc.getBlockX(), (y - 1), loc.getBlockZ()).getType())
-                && safeLiftIds.contains(w.getBlockAt(loc.getBlockX(), (y - 2), loc.getBlockZ()).getType()))
-                || (!safeLiftIds.contains(w.getBlockAt(loc.getBlockX(), (y), loc.getBlockZ()).getType())
-                || !safeLiftIds.contains(w.getBlockAt(loc.getBlockX(), (y + 1), loc.getBlockZ()).getType()))) {
-            player.sendMessage("§aYou can't teleport there. It isn't safe.");
-            return false;
-        }
-
-        loc.setY(y);
-        player.teleport(loc);
-        return true;
+    } else {
+        sign = (Sign) e.getClickedBlock().getState();
     }
 
-	@EventHandler
-	public void onSignChange(SignChangeEvent event) {
-		if (!event.getLine(1).equalsIgnoreCase("[Elevator]")) return;
-		
-		boolean found = false;
-		for (int i = 0; i < 265; i++) {
-			Block b = event.getBlock().getWorld().getBlockAt(event.getBlock().getX(),i, event.getBlock().getZ());
-			if (!(b.getState() instanceof Sign)) continue;
-			Sign s = (Sign)b.getState();
-			if (s.getLine(1).equalsIgnoreCase("[Elevator]")) {
-				found = true;
-				break;
-			}
-		}
-		
-		if (found) event.getPlayer().sendMessage("§aElevator created and linked!");
-		else event.getPlayer().sendMessage("§eElevator created");
-		event.setLine(1, "[Elevator]");
-		Sign s = (Sign) event.getBlock().getState();
-		s.update();
-	}
+    if (sign == null) return;
+
+    if (!sign.getLine(1).equalsIgnoreCase("[Elevator]")) return;
+
+    if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+        e.setUseItemInHand(Event.Result.DENY);
+        e.setUseInteractedBlock(Event.Result.DENY);
+        for (int y = (sign.getY() - 1); y != 0; y--) {
+            Block b = sign.getWorld().getBlockAt(sign.getX(), y, sign.getZ());
+            if (!(b.getState() instanceof Sign)) continue;
+            Sign s = (Sign) b.getState();
+            if (s.getLine(1).equalsIgnoreCase("[Elevator]")) {
+                if (teleport(e.getPlayer(), s.getWorld(), y)) {
+                    e.getPlayer().sendMessage("§eGoing " + (s.getLine(0).isEmpty()? "down.." :"to§r " + s.getLine(0)));
+                }
+                return;
+            }
+        }
+        e.getPlayer().sendMessage("§cThere was no Elevator found below this");
+    } else {
+        e.setCancelled(true);
+        sign.update(true);
+        for (int y = (sign.getY() + 1); y <= 256; y++) {
+            Block b = sign.getWorld().getBlockAt(sign.getX(), y, sign.getZ());
+            if (!(b.getState() instanceof Sign)) continue;
+            Sign s = (Sign)b.getState();
+            if (s.getLine(1).equalsIgnoreCase("[Elevator]")) {
+                if (teleport(e.getPlayer(), s.getWorld(), y)) {
+                    e.getPlayer().sendMessage("§eGoing " + (s.getLine(0).isEmpty()? "up.." : "to§r " + s.getLine(0)));
+                }
+                return;
+            }
+        }
+        e.getPlayer().sendMessage("§cThere was no Elevator found above this");
+    }
+}
+
+@EventHandler
+public void onSignChange(SignChangeEvent e) {
+    if (!e.getLine(1).equalsIgnoreCase("[Elevator]")) return;
+
+    boolean found = false;
+    for (int i = 0; i < 256; i++) {
+        Block b = e.getBlock().getWorld().getBlockAt(e.getBlock().getX(), i, e.getBlock().getZ());
+        if (!(b.getState() instanceof Sign)) continue;
+        Sign s = (Sign)b.getState();
+        if (s.getLine(1).equalsIgnoreCase("[Elevator]")) {
+            found = true;
+            break;
+        }
+    }
+
+    e.getPlayer().sendMessage("§eElevator created " + (found? "and linked" : ""));
+    e.setLine(1, "[Elevator]");
+    ((Sign) e.getBlock().getState()).update();
+}
+
+private boolean teleport(Player player, World w, int y) {
+    y--;
+    Location loc = player.getLocation();
+    if (!safeLiftIds.contains(w.getBlockAt(loc.getBlockX(), (y), loc.getBlockZ()).getTypeId())) y++;
+    if ((safeLiftIds.contains(w.getBlockAt(loc.getBlockX(), (y - 1), loc.getBlockZ()).getTypeId()) //
+            && safeLiftIds.contains(w.getBlockAt(loc.getBlockX(), (y - 2), loc.getBlockZ()).getTypeId()))
+            || (!safeLiftIds.contains(w.getBlockAt(loc.getBlockX(), (y), loc.getBlockZ()).getTypeId())
+            || !safeLiftIds.contains(w.getBlockAt(loc.getBlockX(), (y + 1), loc.getBlockZ()).getTypeId()))) {
+        player.sendMessage("§cTeleport location is not safe!");
+        return false;
+    }
+
+    loc.setY(y);
+    return player.teleport(loc);
+}
 	
 	static {
         attachableIds.add(Material.CHEST.getId());
