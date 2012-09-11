@@ -1,5 +1,7 @@
 package com.etriacraft.EtriaUtils;
 
+import java.io.IOException;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.etriacraft.EtriaUtils.Listeners.PlayerListener;
@@ -16,6 +18,14 @@ public class EtriaUtils extends JavaPlugin {
 	@Override
 	public void onEnable() {
 
+		// Metrics Stuff
+		try {
+		    MetricsLite metrics = new MetricsLite(this);
+		    metrics.start();
+		} catch (IOException e) {
+		    // Failed to submit the stats :-(
+		}
+		// Load the Config
 		Config.load(this);
 		
 		// Register Listeners

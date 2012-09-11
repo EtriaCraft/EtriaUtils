@@ -1,5 +1,5 @@
 name: EtriaUtils
-version: v1.0
+version: v1.1
 main: com.etriacraft.EtriaUtils.EtriaUtils
 commands:
   modchat:
@@ -15,3 +15,5 @@ permissions:
     description: Saves item drops on death.
   eu.saveexp:
     description: Saves EXP on death.
+  eu.chat.modchat:
+    description: See / Use modchat
