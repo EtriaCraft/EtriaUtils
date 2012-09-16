@@ -38,7 +38,11 @@ public class MessageCmds {
                 format = format.replace("<message>", Utils.buildString(args, 0)).replace("<name>", s.getName());
                 format = Utils.colorize(format);
                 
-                Bukkit.broadcast(format, "eu.chat.modchat");
+                for(Player player: Bukkit.getOnlinePlayers()) {
+                	if ((player.hasPermission("eu.chat.modchat"))) {
+                		player.sendMessage(format);
+                	}
+                }
                 return true;
             }
         };
