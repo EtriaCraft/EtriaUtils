@@ -7,7 +7,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
-
 import com.etriacraft.EtriaUtils.Config;
 import com.etriacraft.EtriaUtils.EtriaUtils;
 import com.etriacraft.EtriaUtils.Utils;
@@ -22,29 +21,9 @@ public class MessageCmds {
 	}
 	
 	private void init() {
-		PluginCommand broadcast = plugin.getCommand("broadcast");
 		PluginCommand modchat = plugin.getCommand("modchat");
 		PluginCommand list = plugin.getCommand("list");
 		CommandExecutor exe;
-		
-		
-		exe = new CommandExecutor() {
-			@Override
-			public boolean onCommand(CommandSender s, Command c, String 1, String[] args) {
-				if (args.length < 1) return false;
-				if (!s.hasPermission("eu.chat.broadcast")) {
-					s.sendMessage("§cYou don't have permission to do that!");
-					return true;
-				}
-				String format = Config.broadcast_format;
-				format = format.replace("<message>", Utils.buildString(args, 0));
-				format = Utils.colorize(format);
-				
-				Bukkit.broadcastMessage(format);
-				return true;
-			}
-		};
-		broadcast.setExecutor(exe);
 		
 		exe = new CommandExecutor() {
             @Override
@@ -73,6 +52,8 @@ public class MessageCmds {
         }
     };
     list.setExecutor(exe);
+	}
+	
     
 public static void whoCommand(CommandSender s) {
     s.sendMessage("§aThere are§e " + Bukkit.getOnlinePlayers().length + " §aout of§e " + Bukkit.getMaxPlayers() + " §aplayers online");
@@ -95,5 +76,6 @@ public static void whoCommand(CommandSender s) {
     for(String str : list.split("\n")) {
         s.sendMessage(str);
     	}
+}
 	
 }
