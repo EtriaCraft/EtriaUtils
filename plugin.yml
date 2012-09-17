@@ -11,9 +11,9 @@ commands:
     usage: /<command>
     aliases: [who, list, online, players]
 permissions:
-  eu.dropsave:
-    description: Saves item drops on death.
-  eu.saveexp:
-    description: Saves EXP on death.
-  eu.chat.modchat:
-    description: See / Use modchat
+  eu.admin:
+    default: false
+    children:
+      eu.dropsave: true
+      eu.saveexp: true
+      eu.chat.modchat: true
