@@ -6,6 +6,12 @@ commands:
     description: Modchat command
     usage: /<command> [message]
     aliases: [ac, mc, mb, modbroadcast]
+  say:
+    usage: /<command> [message]
+  broadcast:
+    usage: /<command> [message]
+  me:
+    usage: /<command> [message]
   list:
     description: Shows a player list
     usage: /<command>
@@ -16,4 +22,8 @@ permissions:
     children:
       eu.dropsave: true
       eu.saveexp: true
+      eu.chat.color: true
+      eu.chat.me: true
+      eu.chat.broadcast: true
+      eu.chat.say: true
       eu.chat.modchat: true

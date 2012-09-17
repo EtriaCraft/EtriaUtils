@@ -8,6 +8,9 @@ public class Config {
 	
 	// Chat Strings
 	public static String message_format;
+	public static String me_format;
+	public static String say_format;
+	public static String broadcast_format;
 	public static String modchat_format;
 	
 	// join / quit messages
@@ -20,6 +23,9 @@ public class Config {
 		
 		// Chat
 		config.set("chat.message_format", message_format = config.getString("chat.message_format", "<prefix><name>&6:&f <message>"));
+		config.set("chat.me_format", me_format = config.getString("chat.me_format", "* <prefix><name> &f<message> *"));
+		config.set("chat.say_format", say_format = config.getString("chat.say_format", "<&c*Console&f> &7<message>"));
+		config.set("chat.broadcast_format", broadcast_format = config.getString("chat.broadcast_format", "&5[&7Broadcast&5] &5<message>"));
 		config.set("chat.modchat_format", modchat_format = config.getString("chat.modchat_format", "&c[&aModChat&c] &c<name>&7:&a <message>"));
 		// Join / Quit messages
 		config.set("join_message", join_message = config.getString("join_message", "&6<name> has joined the game."));
