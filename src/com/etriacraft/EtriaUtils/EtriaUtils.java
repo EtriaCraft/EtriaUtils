@@ -2,6 +2,7 @@ package com.etriacraft.EtriaUtils;
 
 import java.io.IOException;
 
+import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.etriacraft.EtriaUtils.Listeners.PlayerListener;
@@ -33,6 +34,10 @@ public class EtriaUtils extends JavaPlugin {
 		this.getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
 		cp = new ChatProv(this);
 		mc = new MessageCmds(this);
+	}
+	
+	public void castFakeLightningAtLocation(Location location) {
+		location.getWorld().strikeLightningEffect(location);
 	}
 	
 }

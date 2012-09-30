@@ -2,6 +2,11 @@ package com.etriacraft.EtriaUtils.Listeners;
 
 import java.util.HashMap;
 
+import javax.tools.JavaFileManager.Location;
+
+import net.minecraft.server.Entity;
+import net.minecraft.server.World;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -52,6 +57,13 @@ public class PlayerListener implements Listener{
         deatharmor.remove(e.getPlayer().getName());
     }
     
+    @EventHandler
+    public void LoginLightning(PlayerJoinEvent event) {
+    	if (event.getPlayer().hasPermission("eu.lightninglogin")) {
+    		plugin.castFakeLightningAtLocation(event.getPlayer().getLocation());
+    		
+    	}
+    }
     @EventHandler (priority = EventPriority.MONITOR)
     public void onPlayerLogin(final PlayerLoginEvent e) {
     	plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
