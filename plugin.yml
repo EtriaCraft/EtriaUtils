@@ -20,6 +20,7 @@ permissions:
   eu.admin:
     default: false
     children:
+      eu.build: true
       eu.dropsave: true
       eu.saveexp: true
       eu.chat.color: true
