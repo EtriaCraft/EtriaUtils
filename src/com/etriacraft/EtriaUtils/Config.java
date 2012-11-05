@@ -1,5 +1,7 @@
 package com.etriacraft.EtriaUtils;
 
+import java.util.List;
+
 import org.bukkit.configuration.Configuration;
 
 public class Config {
@@ -18,6 +20,9 @@ public class Config {
 	public static String leave_message;
 	public static String welcome_message;
 	
+	// Nope
+	public static List<String> WitherSpawnWorlds;
+	
 	public static void load(EtriaUtils plugin) {
 		config = plugin.getConfig();
 		
@@ -31,7 +36,13 @@ public class Config {
 		config.set("join_message", join_message = config.getString("join_message", "&6<name> has joined the game."));
 		config.set("leave_message", leave_message = config.getString("leave_message", "&6<name> has left the game."));
 		config.set("welcome_message", welcome_message = config.getString("welcome_message", "&5Welcome &6<name> &5to the server!"));
-		
+		//
+		if (!config.contains("WitherSpawnWorlds")) {
+			final String[] def_wpw = {"world1", "world1_nether"};
+			config.set("WitherSpawnWorlds", def_wpw);
+		}
+		WitherSpawnWorlds = config.getStringList("WitherSpawnWorlds");
+		//
 		plugin.saveConfig();
 	}
 

@@ -1,5 +1,5 @@
 name: EtriaUtils
-version: v1.1
+version: v1.2
 main: com.etriacraft.EtriaUtils.EtriaUtils
 commands:
   modchat:
@@ -26,5 +26,6 @@ permissions:
       eu.chat.color: true
       eu.chat.me: true
       eu.chat.broadcast: true
+      eu.trade: true
       eu.chat.say: true
       eu.chat.modchat: true
